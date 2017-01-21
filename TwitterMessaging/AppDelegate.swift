@@ -7,7 +7,9 @@
 //
 
 import UIKit
-import CoreData
+import Fabric
+import TwitterKit
+import AERecord
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +18,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Twitter & Fabric
+        Twitter.sharedInstance().start(withConsumerKey: "4PYvXdUYEJqskYpyNaCYoZ45T", consumerSecret: "bQIowoxDHqlhxyhNixS5vd4ifqBnj7r1MK0stV0a6Dy0QwE3Pg")
+        Fabric.with([Twitter.self()])
+        
+        // Core Data
+        do {
+            try AERecord.loadCoreDataStack()
+        } catch {
+            debugPrint(error)
+        }
+        
+        // Common UI Customization
+        let navBGColor = UIColor(red: 0.333, green: 0.675, blue: 0.933, alpha: 1.00)
+        UINavigationBar.appearance().barTintColor = navBGColor
+        UINavigationBar.appearance().backgroundColor = navBGColor
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        UIApplication.shared.statusBarStyle = .lightContent
+        
         return true
     }
 
@@ -41,52 +61,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        self.saveContext()
     }
-
-    // MARK: - Core Data stack
-
-    lazy var persistentContainer: NSPersistentContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-        */
-        let container = NSPersistentContainer(name: "TwitterMessaging")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-
-    // MARK: - Core Data Saving support
-
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
+    
+    @available(iOS 9.0, *)
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+        // Twitter
+        if Twitter.sharedInstance().application(app, open:url, options: options) {
+            return true
         }
+        
+        // If you handle other (non Twitter Kit) URLs elsewhere in your app, return true. Otherwise
+        return false
     }
 
 }

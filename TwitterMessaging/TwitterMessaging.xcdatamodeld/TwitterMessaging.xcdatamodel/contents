@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16C67" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AuthenticatedUser" representedClassName=".AuthenticatedUser" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profile_image_url" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="screen_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="verified" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="followers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Follower" inverseName="followingUser" inverseEntity="Follower" syncable="YES"/>
+    </entity>
+    <entity name="Follower" representedClassName=".Follower" syncable="YES">
+        <attribute name="following" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profile_image_url" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="screen_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="verified" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="followingUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AuthenticatedUser" inverseName="followers" inverseEntity="AuthenticatedUser" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Follower" positionX="-63" positionY="-18" width="128" height="150"/>
+        <element name="AuthenticatedUser" positionX="-54" positionY="63" width="128" height="135"/>
+    </elements>
 </model>
