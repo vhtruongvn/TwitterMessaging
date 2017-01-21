@@ -8,7 +8,6 @@
 
 import UIKit
 import TwitterKit
-import AFNetworking
 
 class ChatViewController: UIViewController {
 

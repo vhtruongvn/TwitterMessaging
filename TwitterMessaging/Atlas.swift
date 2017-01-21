@@ -53,4 +53,24 @@ extension CALayer {
         
         self.addSublayer(border)
     }
+    
+}
+
+extension UIImageView {
+    
+    // Load online image async without caching
+    public func imageFromServerURL(urlString: String) {
+        URLSession.shared.dataTask(with: NSURL(string: urlString)! as URL, completionHandler: { (data, response, error) -> Void in
+            if error != nil {
+                print(error!.localizedDescription)
+                return
+            }
+            
+            DispatchQueue.main.async(execute: { () -> Void in
+                let image = UIImage(data: data!)
+                self.image = image
+            })
+        }).resume()
+    }
+
 }

@@ -8,7 +8,6 @@
 
 import UIKit
 import TwitterKit
-import AFNetworking
 import PagedArray
 import AERecord
 
@@ -316,8 +315,9 @@ extension HomeViewController: UITableViewDataSource {
         cell.nameLabel?.text = follower == nil ? "Loading" : follower!.name
         cell.screenNameLabel?.text = follower == nil ? "..." : "@\(follower!.screen_name!)"
         if follower != nil {
-            let profileImageUrl = URL(string: follower!.profile_image_url!)
-            cell.profileImageView.setImageWith(profileImageUrl!, placeholderImage: UIImage(named: "user_default"))
+            ImageLoader.sharedLoader.imageForUrl(urlString: follower!.profile_image_url!, completionHandler: { (image, urlString) in
+                cell.profileImageView.image = image
+            })
         }
     }
     

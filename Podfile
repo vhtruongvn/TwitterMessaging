@@ -6,7 +6,6 @@ target 'TwitterMessaging' do
   use_frameworks!
 
   # Pods for TwitterMessaging
-  pod 'AFNetworking', '~> 3.0' # A delightful networking library for iOS and Mac OS X
   pod 'AERecord' # Super awesome Core Data wrapper library for iOS written in Swift
   pod 'PagedArray', '~> 0.5' # Pagination
   pod 'Fabric'
